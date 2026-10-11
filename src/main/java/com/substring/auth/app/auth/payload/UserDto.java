@@ -1,6 +1,8 @@
 package com.substring.auth.app.auth.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.substring.auth.app.auth.entities.Provider;
+import com.substring.auth.app.auth.entities.UserStatus;
 import lombok.*;
 
 import java.time.Instant;
@@ -18,11 +20,18 @@ public class UserDto {
     private UUID id;
     private String email;
     private String name;
+
+    @JsonIgnore
     private String password;
+
     private String image;
-    private boolean enable = true;
-    private Instant createdAt = Instant.now();
-    private Instant updatedAt = Instant.now();
-    private Provider provider = Provider.LOCAL;
+    private UserStatus status;
+    private boolean emailVerified;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private Instant lastLoginAt;
+    private Provider provider;
+
+    @Builder.Default
     private Set<RoleDto> roles = new HashSet<>();
 }

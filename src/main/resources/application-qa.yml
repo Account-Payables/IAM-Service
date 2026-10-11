@@ -6,8 +6,8 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/auth_app_yt
-    username: root
-    password: root1234
+    username: prem
+    password: password@1234
 
   #    hikari:
   #      pool-name: HikariCP
@@ -83,3 +83,33 @@ app:
     frontend:
       success-redirect: http://localhost:5173/oauth/success
       failure-redirect: http://localhost:5173/oauth/failure
+
+auth:
+  base-url: http://localhost:8083
+  default-role: USER
+  security:
+    max-login-attempts: 5
+    lockout-duration-minutes: 15
+    trust-proxy: false          # set true only when behind nginx that strips X-Forwarded-For
+    rate-limit:
+      login-rpm: 10
+      register-rpm: 5
+      forgot-password-rpm: 5
+      resend-verification-rpm: 3
+  email-verification:
+    required: false
+    token-expiry-hours: 24
+  password:
+    min-length: 8
+    max-length: 128
+    require-uppercase: false
+    require-digit: false
+    require-special-char: false
+  roles:
+    - name: SUPER_ADMIN
+      permissions:
+        - "*"
+    - name: USER
+      permissions: []
+    - name: MANAGER
+      permissions: []

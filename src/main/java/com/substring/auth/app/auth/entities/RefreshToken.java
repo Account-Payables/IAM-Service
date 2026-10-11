@@ -1,6 +1,5 @@
 package com.substring.auth.app.auth.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,13 +9,11 @@ import java.util.UUID;
 @Entity
 @Table(name = "refresh_tokens", indexes = {
         @Index(name = "refresh_tokens_jti_idx", columnList = "jti", unique = true),
-        @Index(name = "refresh_tokens_user_id_idx", columnList = "user_id")
+        @Index(name = "refresh_tokens_user_id_idx", columnList = "user_id"),
+        @Index(name = "refresh_tokens_revoked_idx", columnList = "revoked"),
+        @Index(name = "refresh_tokens_expires_idx", columnList = "expiresAt")
 })
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class RefreshToken {
 
     @Id
@@ -27,10 +24,10 @@ public class RefreshToken {
     private String jti;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false,updatable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @Column(updatable = false,nullable = false)
+    @Column(updatable = false, nullable = false)
     private Instant createdAt;
 
     @Column(nullable = false)
@@ -39,8 +36,13 @@ public class RefreshToken {
     @Column(nullable = false)
     private boolean revoked;
 
-//    private String refreshToken;
-
     private String replacedByToken;
 
+    @Column(length = 500)
+    private String deviceInfo;
+
+    @Column(length = 45)
+    private String ipAddress;
+
+    private Instant lastUsedAt;
 }
